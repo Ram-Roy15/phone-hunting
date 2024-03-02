@@ -26,9 +26,8 @@ const displayPhone = (phones, isShowAll) => {
       <figure><img class="rounded-xl" src="${phone.image}" /></figure>
     <div class="card-body">
         <h2 class="card-title">${phone.phone_name}</h2>
-        <h1>${phone.brand}</h1>
-        <div class="card-actions justify-end">
-            <button class="btn btn-primary">Buy Now</button>
+        <div class="card-actions justify-center">
+            <button onclick="showDetails('${phone.slug}')" class="btn btn-primary">Details</button>
         </div>
     </div>
       `;
@@ -55,6 +54,39 @@ const spinner = (isLoading) => {
 
 const showAll = () => {
   handleBtn(true);
+};
+
+const showDetails = async (id) => {
+  const res = await fetch(
+    `https://openapi.programming-hero.com/api/phone/${id}`
+  );
+  const data = await res.json();
+  phone = data.data;
+  showModal(phone);
+  // console.log(phone);
+};
+
+const showModal = (phone) => {
+  // console.log(phone);
+  // const phoneImage = document.getElementById("phone-img");
+
+  const phonContainer = document.getElementById("phone-container");
+  phonContainer.innerHTML = `
+<img src="${phone.image}" alt="">
+<h3 id="show-details-phone-name" class="font-bold text-lg">Brand: ${phone.brand}</h3>
+<h3 id="show-details-phone-name" class="font-bold text-lg">Name: ${phone.name}</h3>
+<h3 id="show-details-phone-name" class="font-bold text-lg">Chipset: ${phone?.mainFeatures?.chipSet}</h3>
+<h3 id="show-details-phone-name" class="font-bold text-lg">Display: ${phone?.mainFeatures?.displaySize}</h3>
+<h3 id="show-details-phone-name" class="font-bold text-lg">Memory: ${phone?.mainFeatures?.memory}</h3>
+<h3 id="show-details-phone-name" class="font-bold text-lg">Storage: ${phone?.mainFeatures?.storage}</h3>
+<h3 id="show-details-phone-name" class="font-bold text-lg">Sensors: ${phone?.mainFeatures?.sensors[0]}</h3>
+<h3 id="show-details-phone-name" class="font-bold text-lg">Sensors: ${phone?.mainFeatures?.sensors[1]}</h3>
+<h3 id="show-details-phone-name" class="font-bold text-lg">Sensors: ${phone?.mainFeatures?.sensors[2]}</h3>
+<h3 id="show-details-phone-name" class="font-bold text-lg">Sensors: ${phone?.mainFeatures?.sensors[3]}</h3>
+<h3 id="show-details-phone-name" class="font-bold text-lg">Sensors: ${phone?.mainFeatures?.sensors[4]}</h3>
+<h3 id="show-details-phone-name" class="font-bold text-lg">Sensors: ${phone?.mainFeatures?.sensors[5]}</h3>
+  `;
+  my_modal_show.showModal();
 };
 
 loadPhones();
